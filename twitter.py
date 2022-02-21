@@ -17,7 +17,7 @@ class Info():
 
     def ComprobaHora(self):
         if self.amencer == self.hora:
-            texto = f"🌄 Bo día! Son as {self.hora} e acaba de saír o sol."
+            texto = f"🌄 Bo día! Son as {self.hora} e acaba de nacer o sol."
             logging.info("Procedemos a publicar o chío do amencer")
             self.PublicaEstado(texto)
         elif self.mediodia == self.hora:
@@ -38,12 +38,21 @@ class Info():
         except Exception as e:
             logging.error("Produceuse un erro ao executar o chío")
 
+    def converte_a_segundos(self, tempo):
+        horas = int(tempo.split(':')[0])
+        minutos = int(tempo.split(':')[1])
+        return horas * 3600 + minutos * 60
+
+    def converte_a_minutos(self, segundos):
+        return int(segundos / 60)
+
     def CreaResumo(self):
         onte = date.today() - timedelta(days=1)
         datos_onte = Arquivo.selectBD(onte)
-        texto_simple =  f"Hoxe naceu o sol ás {self.amencer} e púxose ás {self.anoitecer}. O día durou {self.duracion[:2]} horas e {self.duracion[3:]} minutos."
+        texto_simple =  f"Hoxe naceu o sol ás {self.amencer} e púxose ás {self.anoitecer}. O día durou {self.duracion.split(':')[0]} horas e {self.duracion.split(':')[1]} minutos."
         if datos_onte is not None:
-            resta = int(self.duracion[3:]) - int(datos_onte['duracion'][3:])
+            resta_segundos = int(self.converte_a_segundos(self.duracion)) - int(self.converte_a_segundos(datos_onte['duracion']))
+            resta = self.converte_a_minutos(resta_segundos)
             if resta == 0:
                 texto = f"{texto_simple} Tivemos as mesmas horas de sol que onte."
             elif resta == 1:
@@ -57,8 +66,8 @@ class Info():
         else:
             texto = texto_simple
         logging.info("Procedemos a publicar o resumo")
-        self.PublicaEstado(texto)
+        return texto
 
 if __name__ == '__main__':
-    tweet = Info({'dia': '2022-02-17', 'amencer': '08:27', 'mediodia': '13:46', 'anoitecer': '19:06', 'duracion': '10:30'})
-    tweet.CreaResumo()
+    tweet = Info({'amencer': '09:03', 'mediodia': '13:37', 'anoitecer': '18:12', 'duracion': '10:1'})
+    print(tweet.CreaResumo())

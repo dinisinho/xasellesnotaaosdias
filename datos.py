@@ -14,6 +14,7 @@ class Arquivo():
 
     def descargar(self):
         end_time = f"{self.hoxe}T23:59:59"
+
         url_params = {
             'API_KEY':MGZ_TOKEN,
             'locationIds':MGZ_LOCATIONID,
@@ -29,7 +30,8 @@ class Arquivo():
                     amencer = dato['sunrise'][11:16]
                     mediodia = dato['midday'][11:16]
                     anoitecer = dato['sunset'][11:16]
-                    duracion = f"{dato['duration'][0:2]}:{dato['duration'][4:6]}"
+                    duracion_time = time.strptime(dato['duration'], "%Hh %Mm")
+                    duracion = f"{duracion_time.tm_hour}:{duracion_time.tm_min}"
         
         return {'amencer':amencer, 'mediodia':mediodia, 'anoitecer':anoitecer, 'duracion':duracion}
 
@@ -73,5 +75,5 @@ class Arquivo():
             return
 
 if __name__ == '__main__':
-    hoxe = date.today()
-    print(Arquivo.selectBD(hoxe))
+    dato = Arquivo()
+    dato.acatualizaBD()

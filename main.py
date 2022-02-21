@@ -37,7 +37,8 @@ def chio_resumo():
     hoxe = date.today()
     datos = Arquivo.selectBD(hoxe)
     info = Info(datos)
-    info.CreaResumo()
+    tweet = info.CreaResumo()
+    info.PublicaEstado(tweet)
 
 if __name__ == '__main__':
     logging.info("Programa iniciado")
