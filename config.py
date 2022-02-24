@@ -17,4 +17,5 @@ DB = "data/datos.db"
 
 # Configuración schedule
 HORA_DESCARGA = "00:00"
-HORA_RESUMO = "22:45"
+HORA_RESUMO_DIARIO = "22:45"
+HORA_RESUMO_SEMANAL = "12:15"

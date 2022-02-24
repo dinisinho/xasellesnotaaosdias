@@ -7,7 +7,7 @@ from twitter import Info
 import logging
 import schedule
 from time import sleep
-from datetime import date
+from datetime import date, timedelta
 
 # Nivel de log
 log_level = logging.INFO
@@ -33,19 +33,35 @@ def chio():
         gardardatos()
         chio()
 
-def chio_resumo():
+def chio_resumo_diario():
     hoxe = date.today()
     datos = Arquivo.selectBD(hoxe)
     info = Info(datos)
-    tweet = info.CreaResumo()
-    info.PublicaEstado(tweet)
+    tweet = info.CreaResumoDiario()
+    if tweet is not None:
+        logging.info("procedemos a publicar o resumo diario")
+        info.PublicaEstado(tweet)
+    else:
+        logging.error("Non se puido publicar o resumo diario porque non había datos suficientes")
+    
+def chio_resumo_semanal():
+    onte = date.today() - timedelta(days=1)
+    datos_onte = Arquivo.selectBD(onte)
+    info = Info(datos_onte)
+    tweet = info.CreaResumoSemanal()
+    if tweet is not None:
+        logging.info("Procedemos a publicar o resumo semanal")
+        info.PublicaEstado(tweet)
+    else:
+        logging.error("Non se puido publicar o resumo semanal porque non había datos suficientes")
 
 if __name__ == '__main__':
     logging.info("Programa iniciado")
     chio()
     schedule.every().minute.do(chio)
     schedule.every().day.at(HORA_DESCARGA).do(gardardatos)
-    schedule.every().day.at(HORA_RESUMO).do(chio_resumo)
+    schedule.every().day.at(HORA_RESUMO_DIARIO).do(chio_resumo_diario)
+    schedule.every().friday.at(HORA_RESUMO_SEMANAL).do(chio_resumo_semanal)
     while True:
         schedule.run_pending()
         sleep(1)

@@ -46,7 +46,7 @@ class Info():
     def converte_a_minutos(self, segundos):
         return int(segundos / 60)
 
-    def CreaResumo(self):
+    def CreaResumoDiario(self):
         onte = date.today() - timedelta(days=1)
         datos_onte = Arquivo.selectBD(onte)
         texto_simple =  f"Hoxe naceu o sol ás {self.amencer} e púxose ás {self.anoitecer}. O día durou {self.duracion.split(':')[0]} horas e {self.duracion.split(':')[1]} minutos."
@@ -65,9 +65,28 @@ class Info():
                 texto = f"{texto_simple} Minguan os días. Tivemos {abs(resta)} minutos de luz menos que onte."
         else:
             texto = texto_simple
-        logging.info("Procedemos a publicar o resumo")
         return texto
 
+    def CreaResumoSemanal(self):
+        hai_unha_semana = date.today() - timedelta(days=8)
+        datos_hai_unha_semana = Arquivo.selectBD(hai_unha_semana)
+
+        if datos_hai_unha_semana is not None:
+            texto = f"Onte naceu o sol ás {self.amencer} e púxose ás {self.anoitecer}. Sete días atrás naceu ás {datos_hai_unha_semana['amencer']} e púxose ás {datos_hai_unha_semana['anoitecer']}."
+            resta_segundos = int(self.converte_a_segundos(self.duracion)) - int(self.converte_a_segundos(datos_hai_unha_semana['duracion']))
+            resta = self.converte_a_minutos(resta_segundos)
+            
+            if resta > 0:
+                texto = f"{texto} Esta semana notóuselle aos días, que medraron {resta} minutos."
+            elif resta < 0:
+                texto = f"{texto} Esta semana notóuselle ás noites, que minguaron os días {abs(resta)} minutos."
+            elif resta == 0:
+                texto = f"{texto} Esta semana non se lle notou nada aos días."
+            return texto
+        else:
+            logging.error("Non se pode crear o resumo semanal porque non hai datos na base de datos para os días correspondentes")
+            return
+
 if __name__ == '__main__':
-    tweet = Info({'amencer': '09:03', 'mediodia': '13:37', 'anoitecer': '18:12', 'duracion': '10:1'})
-    print(tweet.CreaResumo())
+    tweet = Info({'amencer': '09:03', 'mediodia': '13:37', 'anoitecer': '18:12', 'duracion': '11:55'})
+    print(tweet.CreaResumoSemanal())
