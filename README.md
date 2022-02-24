@@ -1,7 +1,7 @@
 # xasellenotaaosdias-tw
 Bot de twitter escrito en python, que descarga diariamente os datos das horas de sol que fornece meteogalicia a través da súa API.
 
-## Requeirmentos:
+## Requirimentos:
 
 certifi==2021.10.8    
 charset-normalizer==2.0.11  
