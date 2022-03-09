@@ -77,11 +77,11 @@ class Info():
             resta = self.converte_a_minutos(resta_segundos)
             
             if resta > 0:
-                texto = f"{texto} Esta semana notóuselle aos días, que medraron {resta} minutos."
+                texto = f"{texto} Esta semana notóuselles aos días, que medraron {resta} minutos."
             elif resta < 0:
-                texto = f"{texto} Esta semana notóuselle ás noites, que minguaron os días {abs(resta)} minutos."
+                texto = f"{texto} Esta semana notóuselles ás noites, que minguaron os días {abs(resta)} minutos."
             elif resta == 0:
-                texto = f"{texto} Esta semana non se lle notou nada aos días."
+                texto = f"{texto} Esta semana non se lles notou nada aos días."
             return texto
         else:
             logging.error("Non se pode crear o resumo semanal porque non hai datos na base de datos para os días correspondentes")
