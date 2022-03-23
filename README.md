@@ -3,12 +3,12 @@ Bot de twitter escrito en python, que descarga diariamente os datos das horas de
 
 ## Requerimentos:
 
-[a relative link](requirements.txt)
+[requirements.txt](requirements.txt)
 
 ## API MeteoSIX de Meteogalicia
 Podes atopar a documentación desta API aquí: https://www.meteogalicia.gal/datosred/infoweb/meteo/proxectos/meteosix/API_MeteoSIX_v4_gl.pdf
 Para utilizala é necesario unha clave, pero é gratuíta. Só é necesario enviar un correo a administracion-web.meteogalicia@xunta.gal solicitándoa.
-Esta configuración débese incluír no ficheiro [a relative link](config.py)
+Esta configuración débese incluír no ficheiro [de configuración](config.py)
 
 ## API de Twitter
 Utiliza a Api V2 de twitter con oauth1. É necesario obter os token de acceso en https://developer.twitter.com/.
