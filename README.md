@@ -1,22 +1,14 @@
 # xasellenotaaosdias-tw
 Bot de twitter escrito en python, que descarga diariamente os datos das horas de sol que fornece meteogalicia a través da súa API.
 
-## Requirimentos:
+## Requerimentos:
 
-certifi==2021.10.8    
-charset-normalizer==2.0.11  
-idna==3.3     
-oauthlib==3.2.0     
-requests==2.27.1      
-requests-oauthlib==1.3.1      
-schedule==1.1.0     
-tweepy==4.5.0     
-urllib3==1.26.8     
+[a relative link](requirements.txt)
 
 ## API MeteoSIX de Meteogalicia
 Podes atopar a documentación desta API aquí: https://www.meteogalicia.gal/datosred/infoweb/meteo/proxectos/meteosix/API_MeteoSIX_v4_gl.pdf
 Para utilizala é necesario unha clave, pero é gratuíta. Só é necesario enviar un correo a administracion-web.meteogalicia@xunta.gal solicitándoa.
-Esta configuración débese incluír no ficheiro config.py
+Esta configuración débese incluír no ficheiro [a relative link](config.py)
 
 ## API de Twitter
 Utiliza a Api V2 de twitter con oauth1. É necesario obter os token de acceso en https://developer.twitter.com/.
