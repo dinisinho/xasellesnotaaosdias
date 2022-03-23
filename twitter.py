@@ -5,6 +5,7 @@ from datos import Arquivo
 import logging
 import tweepy
 from datetime import datetime, date, timedelta
+from pytz import timezone
 
 class Info():
     def __init__(self, datos):
@@ -30,6 +31,15 @@ class Info():
             self.PublicaEstado(texto)
         else:
             logging.debug("Non é hora de publicar nada")
+
+    def CambioHorario(self):
+        manha = date.today() + timedelta(days=1)
+        tz = timezone('Europe/Madrid')
+        cambia = False
+        for a in tz._utc_transition_times:
+            if manha.strftime('%Y-%m-%d') == a.strftime('%Y-%m-%d'):
+                cambia = True
+        return cambia
 
     def PublicaEstado(self, texto):
         try:
@@ -65,6 +75,8 @@ class Info():
                 texto = f"{texto_simple} Minguan os días. Tivemos {abs(resta)} minutos de luz menos que onte."
         else:
             texto = texto_simple
+        if self.CambioHorario():
+            texto = f"{texto} Por certo, esta madrugada cambia a hora! Como vai a polémica polo galituiter?"
         return texto
 
     def CreaResumoSemanal(self):
@@ -89,4 +101,4 @@ class Info():
 
 if __name__ == '__main__':
     tweet = Info({'amencer': '09:03', 'mediodia': '13:37', 'anoitecer': '18:12', 'duracion': '11:55'})
-    print(tweet.CreaResumoSemanal())
+    print(tweet.CambioHorario())
