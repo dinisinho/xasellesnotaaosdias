@@ -91,7 +91,7 @@ class Info():
             if resta > 0:
                 texto = f"{texto} Esta semana notóuselles aos días, que medraron {resta} minutos."
             elif resta < 0:
-                texto = f"{texto} Esta semana notóuselles ás noites, que minguaron os días {abs(resta)} minutos."
+                texto = f"{texto} Esta semana notóuselles aos días, que minguaron {abs(resta)} minutos."
             elif resta == 0:
                 texto = f"{texto} Esta semana non se lles notou nada aos días."
             return texto
