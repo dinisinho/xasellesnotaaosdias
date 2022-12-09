@@ -65,7 +65,7 @@ if __name__ == '__main__':
     schedule.every().minute.do(publicacion)
     schedule.every().day.at(HORA_DESCARGA).do(gardardatos)
     schedule.every().day.at(HORA_RESUMO_DIARIO).do(publicacion_resumo_diario)
-    schedule.every().friday.at(HORA_RESUMO_SEMANAL).do(publicacion_resumo_semanal)
+    schedule.every().sunday.at(HORA_RESUMO_SEMANAL).do(publicacion_resumo_semanal)
     while True:
         schedule.run_pending()
         sleep(1)

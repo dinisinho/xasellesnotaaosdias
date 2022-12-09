@@ -100,17 +100,21 @@ class Info():
             resta_segundos = int(self.converte_a_segundos(self.duracion)) - int(self.converte_a_segundos(datos_hai_unha_semana['duracion']))
             resta = self.converte_a_minutos(resta_segundos)
             
-            if resta > 0:
-                texto = f"{texto} Esta semana notóuselles aos días, que medraron {resta} minutos."
-            elif resta < 0:
-                texto = f"{texto} Esta semana notóuselles aos días, que minguaron {abs(resta)} minutos."
+            if resta > 0 and resta <= 10:
+                texto = f"{texto} Nesta semana notóuselles un pouquiño aos días, que medraron {resta} minutos."
+            elif resta > 10:
+                texto = f"{texto} Nesta semana notóucheselles abondo aos días, que medraron {resta} minutos."
+            elif resta < 0 and resta >= -10:
+                texto = f"{texto} Nesta semana notóuselles un pouquiño aos días, que minguaron {abs(resta)} minutos."
+            elif resta < -10:
+                texto = f"{texto} Nesta semana notóucheselles abondo aos días, que minguaron {abs(resta)} minutos."
             elif resta == 0:
-                texto = f"{texto} Esta semana non se lles notou nada aos días."
+                texto = f"{texto} Nesta semana non se lles notou nadiña aos días."
             return texto
         else:
             logging.error("Non se pode crear o resumo semanal porque non hai datos na base de datos para os días correspondentes")
             return
 
 if __name__ == '__main__':
-    tweet = Info({'amencer': '09:03', 'mediodia': '13:37', 'anoitecer': '18:12', 'duracion': '11:0'})
-    print(tweet.CreaResumoDiario())
+    tweet = Info({'amencer': '09:03', 'mediodia': '13:37', 'anoitecer': '18:12', 'duracion': '9:26'})
+    print(tweet.CreaResumoSemanal())
