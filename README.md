@@ -49,7 +49,7 @@ CREATE TABLE "pordosol" (
 ### Contedor con opcións de exemplo
 ```bash
     docker run -d --name xasellesnotaaosdias-contedor  -e MGZ_TOKEN='XXXXXXX' -e TWITTER=true -e T_CONSUMER_KEY='XXXXX' -e T_CONSUMER_SECRET='XXXXX' -e T_ACCESS_KEY='XXXXX' -e T_ACCESS_SECRET='XXXXX'  xasellesnotaaosdias-imaxe
-
+```
 
 ### Variábeis que acepta
 ```
