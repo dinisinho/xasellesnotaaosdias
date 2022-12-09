@@ -6,10 +6,10 @@ import logging
 import tweepy
 from datetime import datetime, date, timedelta
 from pytz import timezone
+from mastodon import Mastodon
 
 class Info():
     def __init__(self, datos):
-        self.client = tweepy.Client(TW_BEAREN_TOKEN, TW_API_KEY, TW_API_KEY_SECRET, TW_ACCESS_TOKEN, TW_ACCESS_TOKEN_SECRET)
         self.hora = datetime.now().strftime("%H:%M")
         self.amencer = datos['amencer']
         self.mediodia = datos['mediodia']
@@ -42,11 +42,20 @@ class Info():
         return cambia
 
     def PublicaEstado(self, texto):
-        try:
-            self.client.create_tweet(text=texto)
-            logging.info("Publicouse o chío")
-        except Exception as e:
-            logging.error("Produceuse un erro ao executar o chío")
+        if TWITTER:
+            try:
+                self.t_client = tweepy.Client(TW_BEAREN_TOKEN, TW_API_KEY, TW_API_KEY_SECRET, TW_ACCESS_TOKEN, TW_ACCESS_TOKEN_SECRET)
+                self.t_client.create_tweet(text=texto)
+                logging.info("Publicouse o chío")
+            except Exception as e:
+                logging.error("Produceuse un erro ao publicar o chío")
+        if MASTODON:
+            try:
+                self.m_client = Mastodon(access_token = M_ACCESS_TOKEN, api_base_url = M_API_BASE_URL)
+                self.m_client.status_post(texto)
+                logging.info("Publicouse o toot")
+            except Exception as e:
+                logging.error("Produceuse un erro ao publicar o toot")
 
     def converte_a_segundos(self, tempo):
         horas = int(tempo.split(':')[0])
@@ -59,7 +68,10 @@ class Info():
     def CreaResumoDiario(self):
         onte = date.today() - timedelta(days=1)
         datos_onte = Arquivo.selectBD(onte)
-        texto_simple =  f"Hoxe naceu o sol ás {self.amencer} e púxose ás {self.anoitecer}. O día durou {self.duracion.split(':')[0]} horas e {self.duracion.split(':')[1]} minutos."
+        if self.duracion.split(':')[1] != "0":
+            texto_simple =  f"Hoxe naceu o sol ás {self.amencer} e púxose ás {self.anoitecer}. O día durou {self.duracion.split(':')[0]} horas e {self.duracion.split(':')[1]} minutos."
+        else:
+            texto_simple = f"Hoxe naceu o sol ás {self.amencer} e púxose ás {self.anoitecer}. O día durou {self.duracion.split(':')[0]} horas."
         if datos_onte is not None:
             resta_segundos = int(self.converte_a_segundos(self.duracion)) - int(self.converte_a_segundos(datos_onte['duracion']))
             resta = self.converte_a_minutos(resta_segundos)
@@ -100,5 +112,5 @@ class Info():
             return
 
 if __name__ == '__main__':
-    tweet = Info({'amencer': '09:03', 'mediodia': '13:37', 'anoitecer': '18:12', 'duracion': '11:55'})
-    print(tweet.CambioHorario())
+    tweet = Info({'amencer': '09:03', 'mediodia': '13:37', 'anoitecer': '18:12', 'duracion': '11:0'})
+    print(tweet.CreaResumoDiario())

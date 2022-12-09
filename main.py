@@ -3,7 +3,7 @@
 
 from config import *
 from datos import Arquivo
-from twitter import Info
+from publicador import Info
 import logging
 import schedule
 from time import sleep
@@ -22,7 +22,7 @@ def gardardatos():
     arquivo = Arquivo()
     arquivo.acatualizaBD()
 
-def chio():
+def publicacion():
     hoxe = date.today()
     datos = Arquivo.selectBD(hoxe)
     if datos is not None:
@@ -31,9 +31,9 @@ def chio():
     else:
         logging.info("Descargamos os datos")
         gardardatos()
-        chio()
+        publicacion()
 
-def chio_resumo_diario():
+def publicacion_resumo_diario():
     hoxe = date.today()
     datos = Arquivo.selectBD(hoxe)
     info = Info(datos)
@@ -44,7 +44,7 @@ def chio_resumo_diario():
     else:
         logging.error("Non se puido publicar o resumo diario porque non había datos suficientes")
     
-def chio_resumo_semanal():
+def publicacion_resumo_semanal():
     onte = date.today() - timedelta(days=1)
     datos_onte = Arquivo.selectBD(onte)
     info = Info(datos_onte)
@@ -57,11 +57,15 @@ def chio_resumo_semanal():
 
 if __name__ == '__main__':
     logging.info("Programa iniciado")
-    chio()
-    schedule.every().minute.do(chio)
+    if TWITTER:
+        logging.info("Twitter habilitado")
+    if MASTODON:
+        logging.info("Mastodon habilitado")
+    publicacion()
+    schedule.every().minute.do(publicacion)
     schedule.every().day.at(HORA_DESCARGA).do(gardardatos)
-    schedule.every().day.at(HORA_RESUMO_DIARIO).do(chio_resumo_diario)
-    schedule.every().friday.at(HORA_RESUMO_SEMANAL).do(chio_resumo_semanal)
+    schedule.every().day.at(HORA_RESUMO_DIARIO).do(publicacion_resumo_diario)
+    schedule.every().friday.at(HORA_RESUMO_SEMANAL).do(publicacion_resumo_semanal)
     while True:
         schedule.run_pending()
         sleep(1)
