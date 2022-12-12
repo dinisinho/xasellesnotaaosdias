@@ -68,10 +68,12 @@ class Info():
     def CreaResumoDiario(self):
         onte = date.today() - timedelta(days=1)
         datos_onte = Arquivo.selectBD(onte)
-        if self.duracion.split(':')[1] != "0":
-            texto_simple =  f"Hoxe naceu o sol ás {self.amencer} e púxose ás {self.anoitecer}. O día durou {self.duracion.split(':')[0]} horas e {self.duracion.split(':')[1]} minutos."
-        else:
+        if self.duracion.split(':')[1] == "1":
+            texto_simple =  f"Hoxe naceu o sol ás {self.amencer} e púxose ás {self.anoitecer}. O día durou {self.duracion.split(':')[0]} horas e {self.duracion.split(':')[1]} minuto."
+        elif  self.duracion.split(':')[1] == "0":
             texto_simple = f"Hoxe naceu o sol ás {self.amencer} e púxose ás {self.anoitecer}. O día durou {self.duracion.split(':')[0]} horas."
+        else:
+            texto_simple =  f"Hoxe naceu o sol ás {self.amencer} e púxose ás {self.anoitecer}. O día durou {self.duracion.split(':')[0]} horas e {self.duracion.split(':')[1]} minutos."
         if datos_onte is not None:
             resta_segundos = int(self.converte_a_segundos(self.duracion)) - int(self.converte_a_segundos(datos_onte['duracion']))
             resta = self.converte_a_minutos(resta_segundos)
@@ -116,5 +118,5 @@ class Info():
             return
 
 if __name__ == '__main__':
-    tweet = Info({'amencer': '09:03', 'mediodia': '13:37', 'anoitecer': '18:12', 'duracion': '9:26'})
-    print(tweet.CreaResumoSemanal())
+    tweet = Info({'amencer': '09:03', 'mediodia': '13:37', 'anoitecer': '18:12', 'duracion': '9:1'})
+    print(tweet.CreaResumoDiario())
