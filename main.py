@@ -67,5 +67,10 @@ if __name__ == '__main__':
     schedule.every().day.at(HORA_RESUMO_DIARIO).do(publicacion_resumo_diario)
     schedule.every().sunday.at(HORA_RESUMO_SEMANAL).do(publicacion_resumo_semanal)
     while True:
-        schedule.run_pending()
-        sleep(1)
+        try:
+            schedule.run_pending()
+            sleep(1)
+        except Exception as e:
+            logging.error(f"Erro ao executar as tarefas. {e}")
+            sleep(60)
+            pass
