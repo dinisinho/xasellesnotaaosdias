@@ -18,7 +18,7 @@ mastodon = {
 
 meteogaliza = {
     'MGZ_TOKEN':'',
-    'MGZ_URL':'https://servizos.meteogalicia.gal/apiv4/getSolarInfo',
+    'MGZ_URL':'https://servizos.meteogalicia.gal/apiv5/getSolarInfo',
     'MGZ_LOCATIONID':'42985'
 }
 
